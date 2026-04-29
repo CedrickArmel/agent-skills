@@ -17,7 +17,7 @@ skill-name/
 
 ## `SKILL.md` format
 
-The `SKILL.md` file must contain YAML frontmatter followed by Markdown content.
+The `SKILL.md` file must contain YAML `frontmatter` followed by the `body` markdown content.
 
 ### Frontmatter
 
@@ -55,16 +55,19 @@ The `SKILL.md` file must contain YAML frontmatter followed by Markdown content.
   ```
 </Card>
 
-### Markdown content
-The Markdown body after the frontmatter contains the skill instructions. There are no format restrictions. Write whatever helps agents perform the task effectively.
+### Body
+
+The `body` after the `frontmatter` contains the skill instructions. There are no format restrictions. Write whatever helps agents perform the task effectively.
 Recommended sections:
 - Step-by-step instructions
 - Examples of inputs and outputs
 - Common edge cases
 
+Keep the markdown body content should not exceed 500 lines.
+
 ## Optional directories
 
-### `scripts/`
+### `scripts/` 
 
 Contains executable code that agents can run. Scripts should:
 
@@ -73,6 +76,14 @@ Contains executable code that agents can run. Scripts should:
 * Handle edge cases gracefully
 
 Supported languages depend on the agent implementation. Common options include Python, Bash, and JavaScript.
+
+### `assets/`
+
+Contains static resources:
+
+* Templates (document templates, configuration templates)
+* Images (diagrams, examples)
+* Data files (lookup tables, schemas)
 
 ### `references/`
 
@@ -83,11 +94,3 @@ Contains additional documentation that agents can read when needed:
 * Domain-specific files (`finance.md`, `legal.md`, etc.)
 
 Keep individual [reference files](#file-references) focused. Agents load these on demand, so smaller files mean less use of context.
-
-### `assets/`
-
-Contains static resources:
-
-* Templates (document templates, configuration templates)
-* Images (diagrams, examples)
-* Data files (lookup tables, schemas)
