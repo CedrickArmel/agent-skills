@@ -30,30 +30,18 @@ The `SKILL.md` file must contain YAML `frontmatter` followed by the `body` markd
 | `metadata`      | No       | Should contain arbitrary key-value mapping for additional metadata.                                                              |
 | `allowed-tools` | No       | Should be a space-separated string of pre-approved tools the skill may use. (Experimental)                                    |
 
-<Card>
+#### EXAMPLE
 
-  **Minimal example:**
-
-  ```markdown SKILL.md
-  ---
-  name: skill-name
-  description: A description of what this skill does and when to use it.
-  ---
-  ```
-
-  **Example with optional fields:**
-
-  ```markdown SKILL.md
-  ---
-  name: pdf-processing
-  description: Extract PDF text, fill forms, merge files. Use when handling PDFs.
-  license: Apache-2.0
-  metadata:
-    author: example-org
-    version: "1.0"
-  ---
-  ```
-</Card>
+```markdown SKILL.md
+---
+name: pdf-processing
+description: Extract PDF text, fill forms, merge files. Use when handling PDFs.
+license: Apache-2.0
+metadata:
+  author: example-org
+  version: "1.0"
+---
+```
 
 ### Body
 
@@ -64,6 +52,24 @@ Recommended sections:
 - Common edge cases
 
 Keep the markdown body content should not exceed 500 lines.
+
+#### FORMAT EXAMPLE
+
+```markdown SKILL.md
+# SKILL NAME
+
+Short descripton of the skill.
+
+## STEP N - STEP TITLE
+
+Reference the full [reference](references/step-reference.md) file for this step if any.
+
+1. Instruction 1
+2. Instruction 2
+3. ...
+4. Instruction N
+
+```
 
 ## Optional directories
 
@@ -93,4 +99,6 @@ Contains additional documentation that agents can read when needed:
 * `FORMS.md` - Form templates or structured data formats
 * Domain-specific files (`finance.md`, `legal.md`, etc.)
 
-Keep individual [reference files](#file-references) focused. Agents load these on demand, so smaller files mean less use of context.
+Keep individual reference files focused. Agents load these on demand, so smaller files mean less use of context.
+
+Use `@path/to/file` syntax to reference files. `@path/to/dir/` list directory content.
