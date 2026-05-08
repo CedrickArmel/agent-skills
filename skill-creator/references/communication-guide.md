@@ -1,4 +1,5 @@
 # Communication Guide
+
 The skill creator is used by people across a wide range of technical familiarity — from experienced engineers to first-time terminal users.
 
 ## Defaults
