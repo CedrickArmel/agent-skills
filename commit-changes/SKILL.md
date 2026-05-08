@@ -22,6 +22,8 @@ context: fork
 
 Group the changes by logical unit (e.g. one skill, one feature, one fix). Each independent unit should become its own commit on its own branch.
 
+**Bail early** if there are no changes to commit. Tell the user and exit.
+
 ### Step 2 — Determine the right branch for each group
 
 For each group of changes:
@@ -38,7 +40,7 @@ For each group of changes:
 For each group on its branch:
 
 1. Stage only the files belonging to that group.
-2. Draft a commit message following the Conventional Commits spec.
+2. Draft a commit message.
 3. Commit.
 
 Repeat for every group before finishing.
