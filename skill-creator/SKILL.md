@@ -26,7 +26,7 @@ Figure out where the user is in the process and jump in at the right stage. If t
 
 ### Step 1 — Capture intent
 
-Now you knwow what's a skill is, start by understanding the user's intent. Build an minimum viable understanding of what kind of skill you're building. The current conversation might already contain a workflow the user wants to capture (e.g., they say "turn this into a skill"). If so, extract it from the conversation history first: **tools used**, **steps**, **corrections**, **input/output formats**.
+Now you know what a skill is, start by understanding the user's intent. Build an minimum viable understanding of what kind of skill you're building. The current conversation might already contain a workflow the user wants to capture (e.g., they say "turn this into a skill"). If so, extract it from the conversation history first: **tools used**, **steps**, **corrections**, **input/output formats**.
 
 Then proactively ask questions about:
 
@@ -51,7 +51,7 @@ Stress-tests your hypothesis from the previous step by asking only questions tha
 
 The practical test: if a question's answer couldn't change what you write, don't ask it
 
-2. Research in parallel via subagents (if available or inline) if useful (he skill wraps an external API or unfamiliar domain).
+2. Research in parallel via subagents (if available or inline) if useful (the skill wraps an external API or unfamiliar domain).
 
 Don't write test prompts until this is settled.
 

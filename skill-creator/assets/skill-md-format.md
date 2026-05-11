@@ -15,7 +15,7 @@ metadata:
 
 # SKILL NAME
 
-Short descripton of the intent of this skill.
+Short description of the intent of this skill.
 
 ## STEP N - STEP TITLE
 

@@ -21,7 +21,7 @@ metadata:
 
 ## Step 1 - Pull request context analysis
 
-Anlyse the following PR:
+Analyse the following PR:
 
 - PR diff: !`gh pr diff`
 - PR comments: !`gh pr view --comments`
@@ -40,4 +40,4 @@ When this skill runs:
 
 Note: Any command other than `gh` commands would have failed as `allowed-tools: Bash(gh *)` is set and only allow `gh` commands.
 
-Note: The skill will be available both for the agent and the user as `disable-model-invocation: false` and `user-invocable: true` are set respectivelly.
+Note: The skill will be available both for the agent and the user as `disable-model-invocation: false` and `user-invocable: true` are set respectively.

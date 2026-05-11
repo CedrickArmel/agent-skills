@@ -234,7 +234,7 @@ cloud-deploy/
 3. **Give the agent freedom when multiple approaches are valid and the task tolerates variation**. For flexible instructions, explaining why can be more effective than rigid directives.
 4. **Provide defaults, not menus**. When multiple tools or approaches could work, **pick a default**.
 5. **Favor procedures over declarations**. A skill should teach the agent *how to approach a class of problems*, NOT what to produce for a specific instance. 
-6. **Favor Templates for output format**. When you need the agent to produce output in a specific format, **PROVIDE A TEMPLATE**. Store them in `assets/` and reference them from `SKILL.md` using `@-mention`syntax so they only load when needed.
+6. **Favor Templates for output format**. When you need the agent to produce output in a specific format, **PROVIDE A TEMPLATE**. Store them in `assets/` and reference them from `SKILL.md` using `@-mention` syntax so they only load when needed.
 7. **Use Checklists for multi-step workflows**. An explicit checklist helps the agent track progress and avoid skipping steps, especially when steps have dependencies or validation gates.
 8. **Add `Gotchas` sections in `SKILL.md`**. The highest-value content in many skills is a list of gotchas — environment-specific facts that defy reasonable assumptions. These aren’t general advice (“handle errors appropriately”) but concrete corrections to mistakes the agent will make without being told otherwise. **Keep gotchas in SKILL.md **where the agent reads them before encountering the situation
 9. **Include examples**. It's useful to include examples. You can format them like this (but if "Input" and "Output" are in the examples you might want to deviate a little):
@@ -265,7 +265,7 @@ Don't create misleading skills or skills designed to facilitate unauthorized acc
 
 ## Available string substitutions
 
-Use string substitution for dynamic values in the skill content when usefull:
+Use string substitution for dynamic values in the skill content when useful:
 
 | Variable | Description |
 |:--|:--|
