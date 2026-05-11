@@ -21,7 +21,7 @@ Figure out where the user is in the process and jump in at the right stage. If t
 
 2. Read @references/complete-skill-md-example.md for an example of valid `SKILL.md`.
 
-3. Read @assets/workspace-structure.md for the workspace layout if you haven't yet. Create directories as you go — not all upfront.
+3. Read @assets/workspace-structure.md for the workspace layout. Create directories as you go — not all upfront.
 4. Confirm the workspace placement with the user
 
 ### Step 1 — Capture intent
