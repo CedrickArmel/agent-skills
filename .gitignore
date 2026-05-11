@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+
+# Editors
+.vscode/
+.idea/
+
+# Claude local settings
+.claude/settings.local.json
+.cc-marker
+.settings.local.json.orig
+
+# Per-skill workspace directories
+*-workspace/
