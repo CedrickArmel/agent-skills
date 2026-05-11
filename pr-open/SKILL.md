@@ -6,14 +6,20 @@ description: >
   branches. Checks whether a PR already exists before creating one, and generates a
   meaningful title and description from the branch diff. Also use proactively when a branch
   has been synced and rebased and the next logical step is opening a PR.
+allowed-tools:
+  - Bash(git *)
+  - Bash(gh *)
+context: fork
 compatibility: Requires git and gh (GitHub CLI) authenticated to the target repo.
-allowed-tools: Bash(git *) Bash(gh *)
 metadata:
-  author: CedrickArmel
-  version: "1.1"
+  author: drxc
+  version: "0.1"
 ---
 
-# PR-OPEN
+# pr-open
+
+> Note: this skill runs in a forked context and does not see prior conversation history.
+> If the user specified a base branch or title earlier, that context is unavailable — derive from git/gh data or ask if unclear.
 
 Open a GitHub pull request for the current branch, or report the existing one.
 
@@ -23,32 +29,45 @@ Open a GitHub pull request for the current branch, or report the existing one.
 - Existing PRs for this branch: !`gh pr list --head $(git branch --show-current) --json number,title,state,url 2>/dev/null`
 - Repo default branch: !`gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name' 2>/dev/null || echo "main"`
 
-## STEP 1 — Check for an existing PR
+## Step 1 — Pre-flight checks
 
-Read the injected **Existing PRs** context above.
+Using the injected context:
 
-- If an **open** PR exists: report its number and URL, then stop.
+- If **Current branch** is empty, the repo is in detached HEAD state — tell the user and exit.
+- If an **open** PR already exists for this branch: report its number and URL, then stop.
 - If a **closed or merged** PR exists: note it but continue — the user wants a new one.
-- If none: proceed to Step 2.
 
-## STEP 2 — Understand the changes
+## Step 2 — Understand the changes
 
-Use the injected **Current branch** and **Repo default branch** to run:
+Substitute the actual values from the injected context:
+- `<base>` = injected Repo default branch (e.g. `main`)
+- `<branch>` = injected Current branch
 
 ```bash
+git fetch origin <base>
 git log --oneline origin/<base>..<branch>
 git diff origin/<base>...<branch> --stat
 git diff origin/<base>...<branch>
 ```
 
-From this, derive:
+If the branch has zero commits ahead of `<base>`, tell the user and exit — do not open a PR.
+
+From the diff, derive:
 - A concise PR **title** (≤ 70 chars, Conventional Commits style: `feat:`, `fix:`, `chore:`, `docs:`, etc.)
 - A **summary** of what changed and why (2–4 bullet points)
 - A **test plan** checklist appropriate to the type of change
 
-## STEP 3 — Create the PR
+## Step 3 — Push and create the PR
 
-Use the injected **Repo default branch** as base unless the user specifies otherwise.
+First ensure the branch exists on the remote:
+
+```bash
+git push -u origin <branch>
+```
+
+If the push fails (auth error, protected branch, no remote configured), report the error and stop — do not proceed to `gh pr create`.
+
+Then create the PR using the derived `<title>` and body:
 
 ```bash
 gh pr create --base <base> --head <branch> --title "<title>" --body "$(cat <<'EOF'
@@ -68,12 +87,14 @@ EOF
 
 The body **must** end with `🤖 Generated with [Claude Code](https://claude.com/claude-code)`.
 
-## STEP 4 — Report
+> Draft PRs are not handled by this skill — pass `--draft` manually if needed.
+
+## Step 4 — Report
 
 Print the PR URL returned by `gh pr create`.
 
 ## Gotchas
 
-- If the branch has never been pushed, `gh pr create` will fail — run `git push -u origin <branch>` first, then retry.
-- Do not open a PR if the branch has zero commits ahead of the base.
+- If `origin` is not the correct remote (e.g. the user works with `upstream`/fork remotes), confirm the push target before pushing.
 - If the user explicitly names a different base branch, use that instead of the repo default.
+- Do not include credential-like strings (API keys, tokens) in the generated PR description.
