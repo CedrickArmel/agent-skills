@@ -6,14 +6,21 @@ description: >
   conflicts", "the PR is not mergeable", "update my branch", or when a PR merge fails
   due to conflicts. Also use proactively after a base branch receives new commits that
   the feature branch needs.
+allowed-tools:
+  - Bash(git *)
+  - Bash(gh *)
+  - Read
+  - Edit
+context: fork
 compatibility: Requires git and gh (GitHub CLI) authenticated to the target repo.
-allowed-tools: Bash(git *) Bash(gh *) Bash(jq *) Read Edit
 metadata:
-  author: CedrickArmel
-  version: "1.1"
+  author: drxc
+  version: "0.1"
 ---
 
-# PR-SYNC
+# pr-sync
+
+> Note: this skill runs in a forked context and does not see prior conversation history.
 
 Rebase the current branch onto its base, resolve conflicts, and force-push.
 
@@ -23,18 +30,28 @@ Rebase the current branch onto its base, resolve conflicts, and force-push.
 - PR base branch: !`gh pr view --json baseRefName 2>/dev/null | jq -r '.baseRefName // empty' || gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name' 2>/dev/null || echo "main"`
 - Current status: !`git status --short`
 
-## STEP 1 — Fetch and rebase
+## Step 1 — Pre-flight checks
 
-Use the injected **PR base branch** as the rebase target:
+Before rebasing, validate the injected context:
+
+- If **Current branch** is empty, the repo is in detached HEAD state — tell the user and exit.
+- If **Current branch** matches the **PR base branch**, the user is on the base branch itself — warn and exit.
+- If **Current status** shows uncommitted changes (any non-empty output), tell the user and exit — `git rebase` will refuse to run with a dirty working tree.
+
+Then fetch and rebase:
 
 ```bash
 git fetch origin <base>
 git rebase origin/<base>
 ```
 
-If the rebase succeeds with no conflicts, jump to Step 3.
+Where `<base>` is the injected PR base branch and `<branch>` is the injected Current branch.
 
-## STEP 2 — Resolve conflicts (if any)
+If the rebase reports "Already up to date" or "Current branch is up to date", skip to Step 4 and report that no rebase was needed.
+
+If the rebase succeeds with no conflicts, skip to Step 3.
+
+## Step 2 — Resolve conflicts (if any)
 
 For each conflicted file:
 
@@ -46,9 +63,15 @@ For each conflicted file:
 3. Stage the resolved file: `git add <file>`
 4. Continue: `git rebase --continue`
 
-Repeat until `git rebase --continue` exits cleanly.
+If `git rebase --continue` itself surfaces new conflicts (subsequent commits being replayed), return to step 1 of this section and repeat.
 
-## STEP 3 — Force-push
+If a conflict cannot be resolved (e.g. binary file, structural incompatibility), run `git rebase --abort` to restore the branch to its pre-rebase state, then report the unresolvable conflict to the user and exit.
+
+## Step 3 — Review and push
+
+Before pushing, show the user a summary of all conflict resolutions made and ask for confirmation. AI-driven conflict resolution can introduce subtle logic errors — the user should verify before the force-push is irreversible.
+
+Once confirmed:
 
 ```bash
 git push --force-with-lease origin <branch>
@@ -56,12 +79,15 @@ git push --force-with-lease origin <branch>
 
 Use `--force-with-lease`, not `--force` — it refuses to push if the remote has commits the local branch doesn't know about, preventing accidental overwrites.
 
-## STEP 4 — Report
+If the push fails, report the error and do not retry automatically.
+
+## Step 4 — Report
 
 Summarise:
+- Whether a rebase was needed or the branch was already up to date
 - How many commits were rebased
 - Which files had conflicts and how they were resolved
-- Confirm the push succeeded
+- Confirm the push succeeded (or report failure)
 
 ## Gotchas
 
