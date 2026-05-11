@@ -1,6 +1,12 @@
 ---
 name: skill-creator
-description: Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
+description: >
+  Use when the user wants to create, edit, improve, test, or benchmark a skill — even if
+  the word "skill" is never mentioned. Trigger when the user says "make a skill", "turn
+  this into a skill", "wrap this workflow", "add this as a skill", "update this skill",
+  "run evals", "test this skill", "optimize the description", or "benchmark". Also trigger
+  proactively when the conversation contains a workflow the user has refined and the natural
+  next step is capturing it as a reusable skill.
 ---
 
 # Skill Creator
@@ -11,7 +17,7 @@ A skill for creating and iteratively improving agent skills.
 
 Start by reading @references/communication-guide.md to calibrate how you explain things to this user.
 
-Figure out where the user is in the process and jump in at the right stage. If they say "just vibe with me", skip the formal eval loop.
+Figure out where the user is in the process and jump in at the right stage. If the user signals they want a lightweight process (e.g. "skip the evals", "just write the skill", "quick version"), skip Steps 4–6 and go straight to Step 7.
 
 ## Instructions
 
@@ -61,7 +67,7 @@ Fill in `SKILL.md` template @assets/skill-md-format.md. You may want to drop unr
 
 ### Step 4 — Create Test Cases
 
-Write 2–3 realistic test prompts. Share with the user for sign-off, then save to `evals/evals.json`.
+Write 2–3 realistic test prompts. Share with the user for sign-off, then save to `<skill-name>/evals/evals.json`.
 
 See @assets/schema-evals-json.md for the JSON format. Don't add assertions yet — those come in Step 5.
 
@@ -94,14 +100,6 @@ Apply improvements → rerun → review → repeat until:
 After the skill is in good shape, offer to optimize the `description` field for better triggering accuracy.
 
 See @references/description-optimization.md for the full procedure.
-
-### Step 8 — Package
-
-Ask the user where to put the new created skill, then run:
-
-```bash
-python -m scripts.package_skill <path/to/skill-folder>
-```
 
 ## Environment-Specific Notes
 

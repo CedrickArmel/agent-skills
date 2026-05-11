@@ -15,9 +15,17 @@ metadata:
 
 # SKILL NAME
 
+## OVERVIEW
+
 Short description of the intent of this skill.
 
-## STEP N - STEP TITLE
+## [CONTEXT]
+
+If any `! dynamic context injection` that feeds this skill, it's here.
+
+## INSTRUCTIONS
+
+### Step N - Step Title
 
 Reference the @references/full-procedure-mentioning-example.md for this step if any.
 
@@ -28,4 +36,11 @@ High-level:
 3. ...
 4. Instruction N
 
+## [NOTES]
+
+* This is a note.
+
+## [GOTCHAS]
+
+* This is a gotcha.
 
