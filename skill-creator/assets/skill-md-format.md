@@ -21,7 +21,7 @@ Short description of the intent of this skill.
 
 ## [CONTEXT]
 
-If any `! dynamic context injection` that feed this skill, it's here.
+If any `! dynamic context injection` that feeds this skill, it's here.
 
 ## INSTRUCTIONS
 
@@ -38,9 +38,9 @@ High-level:
 
 ## [NOTES]
 
-* This a note.
+* This is a note.
 
-## GOTCHAS
+## [GOTCHAS]
 
-* This a Gotcha.
+* This is a gotcha.
 

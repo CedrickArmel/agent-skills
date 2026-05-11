@@ -1,6 +1,12 @@
 ---
 name: skill-creator
-description: Create new skills, modify and improve existing skills, and measure skill performance. Always use when you have a task like create a skill from scratch, edit a skill, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
+description: >
+  Use when the user wants to create, edit, improve, test, or benchmark a skill — even if
+  the word "skill" is never mentioned. Trigger when the user says "make a skill", "turn
+  this into a skill", "wrap this workflow", "add this as a skill", "update this skill",
+  "run evals", "test this skill", "optimize the description", or "benchmark". Also trigger
+  proactively when the conversation contains a workflow the user has refined and the natural
+  next step is capturing it as a reusable skill.
 ---
 
 # Skill Creator
@@ -11,7 +17,7 @@ A skill for creating and iteratively improving agent skills.
 
 Start by reading @references/communication-guide.md to calibrate how you explain things to this user.
 
-Figure out where the user is in the process and jump in at the right stage.
+Figure out where the user is in the process and jump in at the right stage. If the user signals they want a lightweight process (e.g. "skip the evals", "just write the skill", "quick version"), skip Steps 4–6 and go straight to Step 7.
 
 ## Instructions
 
@@ -22,7 +28,6 @@ Figure out where the user is in the process and jump in at the right stage.
 2. Read @references/complete-skill-md-example.md for an example of valid `SKILL.md`.
 
 3. Read @assets/workspace-structure.md for the workspace layout. Create directories as you go — not all upfront.
-
 4. Confirm the workspace placement with the user
 
 ### Step 1 — Capture intent
