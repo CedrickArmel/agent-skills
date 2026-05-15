@@ -15,7 +15,7 @@ Take your time. Write a draft improvement, then look at it with fresh eyes befor
 ## The iteration loop
 
 1. Apply improvements to the skill
-2. Rerun all test cases into a new `iteration-<N+1>/` directory, including baseline runs
+2. Rerun all test cases into a new `run-<N+1>/` directory, including baseline runs
 3. Launch the reviewer with `--previous-workspace` pointing at the previous iteration
 4. Wait for the user to review
 5. Read the new feedback, improve again, repeat

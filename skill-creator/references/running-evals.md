@@ -26,7 +26,7 @@ Execute this task:
 * Skill path: <path-to-skill>
 * Task: <eval prompt>
 * Input files: <eval files if any, or "none">
-* Save outputs to: <skill-name>-workspace/iteration-<N>/eval-<ID>-<eval-name>/with_skill/outputs/
+* Save outputs to: <skill-name>-workspace/run-<N>/eval-<ID>-<eval-name>/with_skill/outputs/
 * Outputs to save: <what the user cares about>
 ```
 
@@ -36,28 +36,28 @@ Here’s an example of the instructions you’d give the agent for a single `bas
 
 ##### **New skill**
 
-When creating a new skill from scratch, use the same prompt as `with-skill` run but without the skill path, saving to <skill-name>-workspace/iteration-<N>/eval-<ID>-<eval-name>/without_skill/outputs/
+When creating a new skill from scratch, use the same prompt as `with-skill` run but without the skill path, saving to <skill-name>-workspace/run-<N>/eval-<ID>-<eval-name>/without_skill/outputs/
 
 ```markdown
 Execute this task:
 
 * Task: <eval prompt>
 * Input files: <eval files if any, or "none">
-* Save outputs to: <skill-name>-workspace/iteration-<N>/eval-<ID>-<eval-name>/without_skill/outputs/
+* Save outputs to: <skill-name>-workspace/run-<N>/eval-<ID>-<eval-name>/without_skill/outputs/
 * Outputs to save: <what the user cares about>
 ```
 ##### **Improving existing skill**
 
 When improving an existing skill, use the previous version as your baseline:
 1. Snapshot the old version first : `cp -r <skill-path> <skill-name>-workspace>/skill-snapshot/`)
-2. point baseline at the snapshot, save to  <skill-name>-workspace/iteration-<N>/eval-<ID>-<eval-name>/old_skill/outputs/
+2. point baseline at the snapshot, save to  <skill-name>-workspace/run-<N>/eval-<ID>-<eval-name>/old_skill/outputs/
 
 ```markdown
 Execute this task:
 * Skill path: <skill-name>-workspace>/skill-snapshot/
 * Task: <eval prompt>
 * Input files: <eval files if any, or "none">
-* Save outputs to: <skill-name>-workspace/iteration-<N>/eval-<ID>-<eval-name>/old_skill/outputs/
+* Save outputs to: <skill-name>-workspace/run-<N>/eval-<ID>-<eval-name>/old_skill/outputs/
 * Outputs to save: <what the user cares about>
 ```
 
@@ -101,7 +101,7 @@ When each subagent completes, you receive a notification with `total_tokens` and
 * Run the following bash command:
 
 ```bash
-python -m scripts.aggregate_benchmark <skill-name>-workspace/iteration-N --skill-name <name>
+python -m scripts.aggregate_benchmark <skill-name>-workspace/run-N --skill-name <name>
 ```
 
 This produces `benchmark.json` and `benchmark.md`. Put each with_skill version before its baseline counterpart.
@@ -114,14 +114,14 @@ Run the following bash command:
 
 ```bash
 nohup python <skill-creator-path>/eval-viewer/generate_review.py \
-  <workspace>/iteration-N \
+  <workspace>/run-N \
   --skill-name "my-skill" \
-  --benchmark <workspace>/iteration-N/benchmark.json \
+  --benchmark <workspace>/run-N/benchmark.json \
   > /dev/null 2>&1 &
 VIEWER_PID=$!
 ```
 
-Note: For iteration 2+, also pass `--previous-workspace <workspace>/iteration-<N-1>`.
+Note: For run 2+, also pass `--previous-workspace <workspace>/run-<N-1>`.
 
 Note: Headless / Cowork: use `--static <output_path>` to write a standalone HTML file instead of starting a server.
 

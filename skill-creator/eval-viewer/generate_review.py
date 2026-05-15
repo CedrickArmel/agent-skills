@@ -439,12 +439,25 @@ def main() -> None:
     port = args.port
     _kill_port(port)
     handler = partial(ReviewHandler, workspace, skill_name, feedback_path, previous, benchmark_path)
+    server = None
     try:
         server = HTTPServer(("127.0.0.1", port), handler)
+    except PermissionError:
+        pass  # sandbox blocks socket binding — fall through to static fallback
     except OSError:
-        # Port still in use after kill attempt — find a free one
-        server = HTTPServer(("127.0.0.1", 0), handler)
-        port = server.server_address[1]
+        try:
+            server = HTTPServer(("127.0.0.1", 0), handler)
+            port = server.server_address[1]
+        except PermissionError:
+            pass  # also blocked — fall through to static fallback
+
+    if server is None:
+        static_path = workspace / "review.html"
+        html = generate_html(runs, skill_name, previous, benchmark)
+        static_path.write_text(html)
+        print(f"\n  Server binding blocked — generated static viewer instead.")
+        print(f"  Open in your browser: {static_path}\n")
+        return
 
     url = f"http://localhost:{port}"
     print(f"\n  Eval Viewer")
