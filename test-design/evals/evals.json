@@ -1,0 +1,26 @@
+{
+  "skill_name": "test-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm new to testing. I want to develop a FastAPI endpoint POST /predict that will internally call a _load_model() helper and a _preprocess_image() helper before returning a JSON prediction. How should I structure my tests for this? I want to write the failing tests first, then write the code that makes them pass.",
+      "expected_output": "TDD-framed explanation: write failing tests anchored to the endpoint's observable behavior (HTTP status, response JSON shape) before implementing the endpoint. Should name test files/functions after behaviors, explain that internal helpers are tested indirectly through the endpoint, and give at least one concrete failing test example that drives the implementation.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Every time I rename or split a class my tests break even though the behavior didn't change. Here's my test file: evals/files/test_trainer.py — what's wrong with it?",
+      "expected_output": "Identifies the structural coupling red flags: TestModelTrainer mirrors ModelTrainer class, tests call private methods (_build_optimizer, _run_epoch, _save_checkpoint), test names describe implementation not behavior. Explains why this causes fragility. Proposes behavior-anchored alternatives (e.g. test_training_reduces_loss, test_fit_produces_checkpoint) with at least one rewritten example.",
+      "files": ["evals/files/test_trainer.py"],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "How many test files should I have? I have 12 production modules so I have 12 test files. Is that correct?",
+      "expected_output": "Explains that one-test-file-per-module is a structural coupling smell. Number of test files should match the number of user-facing behaviors, not production files. May have fewer test files than production modules. Illustrates with an example of collapsing multiple module-tests into one behavior-test file.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}
