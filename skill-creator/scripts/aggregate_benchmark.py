@@ -10,28 +10,22 @@ Usage:
     python aggregate_benchmark.py <benchmark_dir>
 
 Example:
-    python aggregate_benchmark.py benchmarks/2026-01-15T10-30-00/
+    python aggregate_benchmark.py skill-workspace/run-1/
 
-The script supports two directory layouts:
+Expected layout:
 
-    Workspace layout (from skill-creator iterations):
-    <benchmark_dir>/
-    └── eval-N/
-        ├── with_skill/
-        │   ├── run-1/grading.json
-        │   └── run-2/grading.json
-        └── without_skill/
-            ├── run-1/grading.json
-            └── run-2/grading.json
-
-    Legacy layout (with runs/ subdirectory):
-    <benchmark_dir>/
-    └── runs/
-        └── eval-N/
-            ├── with_skill/
-            │   └── run-1/grading.json
-            └── without_skill/
-                └── run-1/grading.json
+    <benchmark_dir>/                  (e.g. my-skill-workspace/run-1/)
+    ├── eval-N-<name>/
+    │   ├── eval_metadata.json        (optional: prompt, eval_id)
+    │   ├── with_skill/
+    │   │   ├── outputs/
+    │   │   ├── timing.json
+    │   │   └── grading.json
+    │   └── without_skill/
+    │       ├── outputs/
+    │       ├── timing.json
+    │       └── grading.json
+    └── benchmark.json                (written by this script)
 """
 
 import argparse
@@ -71,104 +65,87 @@ def load_run_results(benchmark_dir: Path) -> dict:
     Returns dict keyed by config name (e.g. "with_skill"/"without_skill",
     or "new_skill"/"old_skill"), each containing a list of run results.
     """
-    # Support both layouts: eval dirs directly under benchmark_dir, or under runs/
-    runs_dir = benchmark_dir / "runs"
-    if runs_dir.exists():
-        search_dir = runs_dir
-    elif list(benchmark_dir.glob("eval-*")):
-        search_dir = benchmark_dir
-    else:
-        print(f"No eval directories found in {benchmark_dir} or {benchmark_dir / 'runs'}")
+    eval_dirs = sorted(benchmark_dir.glob("eval-*"))
+    if not eval_dirs:
+        print(f"No eval directories found in {benchmark_dir}")
         return {}
 
     results: dict[str, list] = {}
 
-    for eval_idx, eval_dir in enumerate(sorted(search_dir.glob("eval-*"))):
+    for eval_idx, eval_dir in enumerate(eval_dirs):
+        # Resolve eval_id from eval_metadata.json or directory name
+        eval_id = eval_idx
         metadata_path = eval_dir / "eval_metadata.json"
         if metadata_path.exists():
             try:
-                with open(metadata_path) as mf:
-                    eval_id = json.load(mf).get("eval_id", eval_idx)
+                eval_id = json.loads(metadata_path.read_text()).get("eval_id", eval_idx)
             except (json.JSONDecodeError, OSError):
-                eval_id = eval_idx
+                pass
         else:
             try:
                 eval_id = int(eval_dir.name.split("-")[1])
-            except ValueError:
-                eval_id = eval_idx
+            except (ValueError, IndexError):
+                pass
 
-        # Discover config directories dynamically rather than hardcoding names
+        # Each subdirectory with a grading.json is a config (with_skill, without_skill, etc.)
         for config_dir in sorted(eval_dir.iterdir()):
             if not config_dir.is_dir():
                 continue
-            # Skip non-config directories (inputs, outputs, etc.)
-            if not list(config_dir.glob("run-*")):
+            grading_file = config_dir / "grading.json"
+            if not grading_file.exists():
                 continue
+
             config = config_dir.name
             if config not in results:
                 results[config] = []
 
-            for run_dir in sorted(config_dir.glob("run-*")):
-                run_number = int(run_dir.name.split("-")[1])
-                grading_file = run_dir / "grading.json"
+            try:
+                grading = json.loads(grading_file.read_text())
+            except json.JSONDecodeError as e:
+                print(f"Warning: Invalid JSON in {grading_file}: {e}")
+                continue
 
-                if not grading_file.exists():
-                    print(f"Warning: grading.json not found in {run_dir}")
-                    continue
+            result = {
+                "eval_id": eval_id,
+                "run_number": 1,
+                "pass_rate": grading.get("summary", {}).get("pass_rate", 0.0),
+                "passed": grading.get("summary", {}).get("passed", 0),
+                "failed": grading.get("summary", {}).get("failed", 0),
+                "total": grading.get("summary", {}).get("total", 0),
+            }
 
+            # Extract timing — check grading.json first, then sibling timing.json
+            timing = grading.get("timing", {})
+            result["time_seconds"] = timing.get("total_duration_seconds", 0.0)
+            timing_file = config_dir / "timing.json"
+            if result["time_seconds"] == 0.0 and timing_file.exists():
                 try:
-                    with open(grading_file) as f:
-                        grading = json.load(f)
-                except json.JSONDecodeError as e:
-                    print(f"Warning: Invalid JSON in {grading_file}: {e}")
-                    continue
+                    timing_data = json.loads(timing_file.read_text())
+                    result["time_seconds"] = timing_data.get("total_duration_seconds", 0.0)
+                    result["tokens"] = timing_data.get("total_tokens", 0)
+                except json.JSONDecodeError:
+                    pass
 
-                # Extract metrics
-                result = {
-                    "eval_id": eval_id,
-                    "run_number": run_number,
-                    "pass_rate": grading.get("summary", {}).get("pass_rate", 0.0),
-                    "passed": grading.get("summary", {}).get("passed", 0),
-                    "failed": grading.get("summary", {}).get("failed", 0),
-                    "total": grading.get("summary", {}).get("total", 0),
-                }
+            metrics = grading.get("execution_metrics", {})
+            result["tool_calls"] = metrics.get("total_tool_calls", 0)
+            if not result.get("tokens"):
+                result["tokens"] = metrics.get("output_chars", 0)
+            result["errors"] = metrics.get("errors_encountered", 0)
 
-                # Extract timing — check grading.json first, then sibling timing.json
-                timing = grading.get("timing", {})
-                result["time_seconds"] = timing.get("total_duration_seconds", 0.0)
-                timing_file = run_dir / "timing.json"
-                if result["time_seconds"] == 0.0 and timing_file.exists():
-                    try:
-                        with open(timing_file) as tf:
-                            timing_data = json.load(tf)
-                        result["time_seconds"] = timing_data.get("total_duration_seconds", 0.0)
-                        result["tokens"] = timing_data.get("total_tokens", 0)
-                    except json.JSONDecodeError:
-                        pass
+            raw_assertions = grading.get("assertions", [])
+            for a in raw_assertions:
+                if "text" not in a or "passed" not in a:
+                    print(f"Warning: assertion in {grading_file} missing required fields (text, passed, evidence): {a}")
+            result["assertions"] = raw_assertions
 
-                # Extract metrics if available
-                metrics = grading.get("execution_metrics", {})
-                result["tool_calls"] = metrics.get("total_tool_calls", 0)
-                if not result.get("tokens"):
-                    result["tokens"] = metrics.get("output_chars", 0)
-                result["errors"] = metrics.get("errors_encountered", 0)
+            notes_summary = grading.get("user_notes_summary", {})
+            result["notes"] = (
+                notes_summary.get("uncertainties", []) +
+                notes_summary.get("needs_review", []) +
+                notes_summary.get("workarounds", [])
+            )
 
-                # Extract expectations — viewer requires fields: text, passed, evidence
-                raw_expectations = grading.get("assertions", [])
-                for exp in raw_expectations:
-                    if "text" not in exp or "passed" not in exp:
-                        print(f"Warning: expectation in {grading_file} missing required fields (text, passed, evidence): {exp}")
-                result["assertions"] = raw_expectations
-
-                # Extract notes from user_notes_summary
-                notes_summary = grading.get("user_notes_summary", {})
-                notes = []
-                notes.extend(notes_summary.get("uncertainties", []))
-                notes.extend(notes_summary.get("needs_review", []))
-                notes.extend(notes_summary.get("workarounds", []))
-                result["notes"] = notes
-
-                results[config].append(result)
+            results[config].append(result)
 
     return results
 
@@ -216,7 +193,7 @@ def aggregate_results(results: dict) -> dict:
     delta_tokens = primary.get("tokens", {}).get("mean", 0) - baseline.get("tokens", {}).get("mean", 0)
 
     run_summary["delta"] = {
-        "pass_rate": f"{delta_pass_rate:+.2f}",
+        "pass_rate": f"{delta_pass_rate * 100:+.1f}%",
         "time_seconds": f"{delta_time:+.1f}",
         "tokens": f"{delta_tokens:+.0f}"
     }

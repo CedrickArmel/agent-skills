@@ -20,6 +20,7 @@ venv/
 .claude/settings.local.json
 .cc-marker
 .settings.local.json.orig
+.settings.local.json.bak
 
 # Per-skill workspace directories
 *-workspace/

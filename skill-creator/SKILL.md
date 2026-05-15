@@ -7,6 +7,7 @@ description: >
   "run evals", "test this skill", "optimize the description", or "benchmark". Also trigger
   proactively when the conversation contains a workflow the user has refined and the natural
   next step is capturing it as a reusable skill.
+compatibility: Python 3.10+, PyYAML
 ---
 
 # Skill Creator
