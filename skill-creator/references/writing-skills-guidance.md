@@ -6,13 +6,15 @@
 
 A skill is a directory containing, at minimum, a `SKILL.md` file:
 
-```
+```txt
+
 skill-name/
 ├── SKILL.md          # Required: metadata + instructions
 ├── scripts/          # Optional: executable code
 ├── references/       # Optional: documentation
 ├── assets/           # Optional: templates, resources
 └── ...               # Any additional files or directories
+
 ```
 
 ## `SKILL.md` specification
@@ -24,16 +26,16 @@ See @assets/skill-md-format.md for a `SKILL.md` template.
 ### Frontmatter
 
 | Field           | Required | Specification                                                                                                       |
-| --------------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
+| --------------- | -------- | --------------------------------------------------------------------------------------------------------------------|
 | `name`          | Yes      | Display name for the skill. Must match the parent directory name. Must be 1-64 characters. May only contain unicode lowercase alphanumeric characters (`a-z`) and hyphens (`-`). Must not start or end with a hyphen (`-`). Must not contain consecutive hyphens (`--`)            |
 | `description`   | Yes      | Should describe both what the skill does and when to use it. Must be 1-1024 characters. Non-empty. Should include pushy specific keywords that help agents identify relevant tasks.                                 |
 | `license`       | No       | Should Specify the license applied to the skill: Either the name of a license or the name of a bundled license file.                                                             |
 | `compatibility` | No       | Must be 1-500 characters. Should only be included if your skill has specific environment requirements (intended product, system packages, network access, etc.). |
-| `metadata`      | No       | Should contain arbitrary key-value mapping for additional metadata.                                                              |
+| `metadata`      | No       | Should contain arbitrary key-value mapping for additional metadata.                                                 |
 | `arguments`                | No          | Should be set when named positional arguments for [`$name` substitution](#available-string-substitutions) is expected in the skill content. Accepts a space-separated string or a YAML list. Names map to argument positions in order.                                                                                                             |
-| `disable-model-invocation` | No          | Should be set to `true` to prevent Claude from automatically loading this skill. Use when user wants to trigger the skill manually with `/name`. Defaults to `false`. |
-| `user-invocable`           | No          | Should be set to `false` for background knowledge users shouldn't invoke directly. Defaults: `true`. |
-| `allowed-tools` | No       | Should be a space-separated string of pre-approved tools the skill may use. Tools include Bash, Agent, MCP,                                    |
+| `disable-model-invocation` | No          | Should be set to `true` to prevent Claude from automatically loading this skill. Use when user wants to trigger the skill manually with `/name`. Defaults to `false`.                                                              |
+| `user-invocable`           | No          | Should be set to `false` for background knowledge users shouldn't invoke directly. Defaults: `true`.  |
+| `allowed-tools` | No       | Should be a **space-separated string** of pre-approved tools the skill may use. The user will not be prompted to approve allowed tools when the skill is running.                                   |
 | `context`                  | No          | Should be set to `fork` to run a forked subagent context in isolation. only makes sense for skills with explicit instructions and when access to conversation history is not needed. |
 | `agent`                    | No          | Defaults to `general-purpose`. Options include `Explore` and `Plan`. May be set to specify which subagent type to use when `context: fork` is set. |
 
@@ -70,6 +72,7 @@ See @assets/skill-md-format.md for a `SKILL.md` template.
   ```yaml
   name: pdf--processing  # consecutive hyphens not allowed
   ```
+
 </Card>
 
 ##### `description` field

@@ -7,7 +7,7 @@ description: >
   "run evals", "test this skill", "optimize the description", or "benchmark". Also trigger
   proactively when the conversation contains a workflow the user has refined and the natural
   next step is capturing it as a reusable skill.
-compatibility: Python 3.10+, PyYAML
+compatibility: Requires Python 3.10+, PyYAML
 ---
 
 # Skill Creator
@@ -25,9 +25,7 @@ Figure out where the user is in the process and jump in at the right stage. If t
 ### Step 0 - Learn to write a viable skill
 
 1. Reads @references/writing-skills-guidance.md for format, anatomy, writing patterns, and progressive disclosure.
-
 2. Read @references/complete-skill-md-example.md for an example of valid `SKILL.md`.
-
 3. Read @assets/workspace-structure.md for the workspace layout. Create directories as you go — not all upfront.
 4. Confirm the workspace placement with the user
 
@@ -108,3 +106,7 @@ The process described above is designed for `Claude Code`. There may be some var
 
 1. Read @references/claude-ai-notes.md for `Claude.ai`'s environment-specific notes, ONLY IF you are running in `Claude.ai`.
 2. Read @references/cowork-notes.md for `Cowork`'s environment-specific notes, ONLY IF you are running in `Cowork`.
+
+## Gotchas
+
+- Some actions may fail because some deps are missing. Create a `venv` then sync it with `requirements.txt`bundled with the skill.
