@@ -6,6 +6,7 @@ description: >
   Groups all changes into logical units, places each on the right branch, and commits
   them with validated Conventional Commits messages.
 allowed-tools: Bash(git *)
+compatibility: Requires /commit-message
 context: fork
 metadata:
   author: drxc
@@ -34,6 +35,7 @@ Groups all pending changes into logical units, places each on the correct branch
 ### Step 1 — Analyse changes
 
 Inspect the injected context. Distinguish between:
+
 - **No changes at all** → bail early, tell the user, and exit.
 - **Changes exist but none are staged** → warn the user, ask whether to proceed with staging, and wait for confirmation before continuing.
 
@@ -44,7 +46,7 @@ Group the remaining changes by logical unit (e.g. one skill, one feature, one fi
 For each group of changes:
 
 1. Identify the conventional commit type (`feat`, `fix`, `refactor`, `chore`, etc.) and scope.
-2. Derive the expected branch name following the convention `<type>/<scope>` (e.g. `feat/commit-changes`, `fix/auth-token`, `refactor/skill-creator`).
+2. Derive the expected branch name following the `conventional branch` specification with a `<type>/<branch-description>` syntax (e.g. `feat/add-login-page`, `fix/header-bug`, `release/v1.2.0`).
 3. Check if that branch already exists (see context above):
    - **Exists** → check out that branch and commit the group there.
    - **Does not exist** → detect the default base branch by running `git symbolic-ref refs/remotes/origin/HEAD --short 2>/dev/null | sed 's|origin/||'`; fall back to `main` if the command fails. Create the new branch from that base with `git checkout -b <branch> <base>`, then commit.
