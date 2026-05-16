@@ -6,11 +6,8 @@ description: >
   with the project's configured validator, refining until it passes.
   Trigger phrases: "write a commit message", "draft a commit", "commit message
   for staged changes", "help me commit", "what should my commit say".
-allowed-tools:
-  - Bash(git *)
+allowed-tools: Bash(git *)
 context: fork
-compatibility:
-  claude-code: ">=1.0"
 metadata:
   author: drxc
   version: "0.2"
@@ -18,7 +15,7 @@ metadata:
 
 # commit-message
 
-Draft a Conventional Commits message for the currently staged changes, validate it, refine until valid.
+Draft a Conventional Commits compliant message for the currently staged changes, validate it, refine until valid.
 
 ## Staged changes (auto-injected)
 
@@ -31,7 +28,7 @@ Diff:
 ## Steps
 
 1. **Stop early if nothing staged.** If the injected diff is empty, tell the user and exit.
-2. **Draft.** Write `type(scope): subject` (≤ 72 chars, imperative, lowercase, no trailing period). Add a body explaining _why_ when not self-evident. Use `!` after type/scope or a `BREAKING CHANGE:` footer for breaking changes. Use the user's request as additional intent signal.
+2. **Draft the commit message.** Follow conventional commits specification: `type(scope): subject` (≤ 72 chars, imperative, lowercase, no trailing period). Add a body explaining _why_ when not self-evident.
 3. **Validate the message.** Check CLAUDE.md (project and global) for a validation command. Run the command found against the draft. If no validation command is configured, warn the user and skip validation.
 4. **Refine on failure.** Read the validator's output, fix the violated rule, re-validate. Cap at 3 attempts; if still failing, surface the last error to the user and ask.
 5. **Present.** Output the validated message in a fenced code block. Do not run `git commit`.
