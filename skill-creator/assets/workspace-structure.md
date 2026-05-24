@@ -8,6 +8,7 @@ Organize eval results in a workspace directory alongside your skill directory. P
 └── evals/
     └── evals.json
 <skill-name>-workspace/
+├── .venv/
 └── run-N/
     ├── eval-N-top-months-chart/
     │   ├── with_skill/
