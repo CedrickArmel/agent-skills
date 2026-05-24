@@ -4,7 +4,7 @@ description: >
   Use when the user wants to create, edit, improve, test, or benchmark a skill — even if
   the word "skill" is never mentioned. Trigger when the user says "make a skill", "turn
   this into a skill", "wrap this workflow", "add this as a skill", "update this skill",
-  "run evals", "test this skill", "optimize the description", or "benchmark". Also trigger
+  "run evals", "test this skill", "optimize the description", "propose improvements for this skill" or "benchmark". Also trigger
   proactively when the conversation contains a workflow the user has refined and the natural
   next step is capturing it as a reusable skill.
 compatibility: Requires Python 3.10+, PyYAML
@@ -24,6 +24,7 @@ Figure out where the user is in the process and jump in at the right stage. If t
 
 ### Step 0 - Learn to write a viable skill
 
+0. Before starting anythong, create the python virtual environment at the root of the workspace `<skill-name>-workspace/.venv/`, activate it and install the `requirements.txt`. Also use this virtual env when you install a python package during your task.
 1. Reads @references/writing-skills-guidance.md for format, anatomy, writing patterns, and progressive disclosure.
 2. Read @references/complete-skill-md-example.md for an example of valid `SKILL.md`.
 3. Read @assets/workspace-structure.md for the workspace layout. Create directories as you go — not all upfront.
