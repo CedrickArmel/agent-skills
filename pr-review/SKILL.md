@@ -1,11 +1,7 @@
 ---
 name: pr-review
 description: >
-  Reviews a GitHub pull request: fetches the diff, analyzes code quality and project
-  conventions, then posts a structured review comment on the PR. Use when the user says
-  "review PR #N", "review this PR", "check the diff", "code review", or when a PR is
-  ready to be reviewed before merging. Always posts the review as a GitHub comment — do
-  not just print it locally.
+  Reviews a GitHub pull request: fetches the diff, analyzes code quality and project conventions, then posts a structured review comment on the PR. Use when you are prompted to review or check a pull request (PR). Also proactivelly trigger when a PR is ready to be reviewed before merging. Posts the review as a GitHub comment and locally.
 allowed-tools: Bash(gh pr *)
 context: fork
 arguments: number
@@ -41,15 +37,16 @@ Check the injected PR metadata above:
 
 The PR metadata and diff are already injected above. Evaluate across these dimensions:
 
-| Dimension | What to check |
-|---|---|
-| **Correctness** | Logic errors, off-by-ones, wrong assumptions, hardcoded values that should be configurable |
-| **Conventions** | English-only comments, consistent naming style, project-specific patterns |
-| **Security** | Hardcoded credentials, unsafe deserialization, injection risks |
-| **Code quality** | Placeholder values left in, dead code, misleading naming, unnecessary complexity |
-| **Consistency** | Does the structure (module layout, entry points, config) match the rest of the repo? |
+| Dimension        | What to check                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| **Correctness**  | Logic errors, off-by-ones, wrong assumptions, hardcoded values that should be configurable |
+| **Conventions**  | English-only comments, consistent naming style, project-specific patterns                  |
+| **Security**     | Hardcoded credentials, unsafe deserialization, injection risks                             |
+| **Code quality** | Placeholder values left in, dead code, misleading naming, unnecessary complexity           |
+| **Consistency**  | Does the structure (module layout, entry points, config) match the rest of the repo?       |
 
 Classify each finding as:
+
 - **Critical** — likely bug or security issue, blocks merge
 - **Minor** — style or naming, non-blocking
 - **Note** — optional suggestion

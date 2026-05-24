@@ -1,16 +1,13 @@
 ---
 name: commit-changes
 description: >
-  Use when the user says "commit my changes", "save my work", "create a commit",
-  "stage and commit", or asks to commit anything — even without using the word "commit".
-  Groups all changes into logical units, places each on the right branch, and commits
-  them with validated Conventional Commits messages.
+  Use when you are prompted to commit changes or save a codebase work, or you plan to - even if the word "commit" is not used. using the "word commit". Groups all changes into logical units, places each on the right branch, and commits them with validated Conventional Commits messages.
 allowed-tools: Bash(git *)
 compatibility: Requires /commit-message
 context: fork
 metadata:
-  author: drxc
-  version: "0.1"
+  author: CedrickArmel
+  version: "0.2"
 ---
 
 # Commit changes
@@ -20,6 +17,7 @@ metadata:
 
 ## Context
 
+- Initial intent: $ARGUMENTS
 - Current git status: !`git status`
 - Current git diff (staged and unstaged changes): !`git diff HEAD`
 - Current branch: !`git branch --show-current`

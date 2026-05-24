@@ -1,18 +1,12 @@
 ---
 name: pr-open
 description: >
-  Opens a GitHub pull request for the current branch. Use when the user says "open a PR",
-  "create a PR", "submit this branch", "push to PR", or asks to open PRs for one or more
-  branches. Checks whether a PR already exists before creating one, and generates a
-  meaningful title and description from the branch diff. Also use proactively when a branch
-  has been synced and rebased and the next logical step is opening a PR.
-allowed-tools:
-  - Bash(git *)
-  - Bash(gh *)
+  Opens a GitHub pull request. Checks whether a PR already exists for the concerned branch before creating one, and generates a meaningful title and description from the branch diff. Use when you are prompted to open a pull request (PR) on one or more branches even if the prompt doesn't explicitely mention word "pull request". Also use proactively when a branch has been synced and rebased and the next logical step is opening a PR.
+allowed-tools: Bash(git *) Bash(gh *)
 context: fork
 compatibility: Requires git and gh (GitHub CLI) authenticated to the target repo.
 metadata:
-  author: drxc
+  author: CedrickArmel
   version: "0.1"
 ---
 
@@ -40,6 +34,7 @@ Using the injected context:
 ## Step 2 — Understand the changes
 
 Substitute the actual values from the injected context:
+
 - `<base>` = injected Repo default branch (e.g. `main`)
 - `<branch>` = injected Current branch
 
@@ -53,6 +48,7 @@ git diff origin/<base>...<branch>
 If the branch has zero commits ahead of `<base>`, tell the user and exit — do not open a PR.
 
 From the diff, derive:
+
 - A concise PR **title** (≤ 70 chars, Conventional Commits style: `feat:`, `fix:`, `chore:`, `docs:`, etc.)
 - A **summary** of what changed and why (2–4 bullet points)
 - A **test plan** checklist appropriate to the type of change
