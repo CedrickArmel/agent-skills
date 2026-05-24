@@ -1,21 +1,13 @@
 ---
 name: pr-sync
 description: >
-  Rebases the current branch onto its base branch, resolves any merge conflicts, and
-  force-pushes to update the remote. Use when the user says "sync", "rebase", "fix
-  conflicts", "the PR is not mergeable", "update my branch", or when a PR merge fails
-  due to conflicts. Also use proactively after a base branch receives new commits that
-  the feature branch needs.
-allowed-tools:
-  - Bash(git *)
-  - Bash(gh *)
-  - Read
-  - Edit
+  Rebases the current branch onto its base branch, resolves any merge conflicts, and force-pushes to update the remote. Use when the user says "sync", "rebase", "fix conflicts", "the PR is not mergeable", "update my branch", or when a PR merge fails due to conflicts. Also use proactively after a base branch receives new commits that the feature branch needs.
+allowed-tools: Bash(git *) Bash(gh *) Read Edit
 context: fork
 compatibility: Requires git and gh (GitHub CLI) authenticated to the target repo.
 metadata:
-  author: drxc
-  version: "0.1"
+  author: CedrickArmel
+  version: "0.2"
 ---
 
 # pr-sync
@@ -84,6 +76,7 @@ If the push fails, report the error and do not retry automatically.
 ## Step 4 — Report
 
 Summarise:
+
 - Whether a rebase was needed or the branch was already up to date
 - How many commits were rebased
 - Which files had conflicts and how they were resolved
