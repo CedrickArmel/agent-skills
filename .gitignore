@@ -1,3 +1,10 @@
+# Claude
+
+.claude/.cc-marker
+.claude/.settings.local.*
+.claude/local
+.claude/worktrees
+
 # macOS
 .DS_Store
 

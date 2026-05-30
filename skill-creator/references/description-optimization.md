@@ -51,6 +51,6 @@ Periodically tail the output to give the user iteration updates and scores.
 
 ## Step 4 — Apply the result
 
-Take best_description from the JSON output, update `SKILL.md` frontmatter. 
+Take best_description from the JSON output, update `SKILL.md` frontmatter.
 
 Show the user before/after and report the scores.

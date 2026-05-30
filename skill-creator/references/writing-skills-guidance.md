@@ -156,7 +156,7 @@ The markdown body content should not exceed 500 lines.
 
 ## Optional directories
 
-### `scripts/` 
+### `scripts/`
 
 Put here executable code that agents can run. Scripts should:
 
@@ -215,7 +215,7 @@ Agents load skills *progressively*, pulling in more detail only as a task calls 
 3. **Resources** (as needed): Files (e.g. those in `references/` or `assets/`) are loaded only when required. Scripts in `scripts/` can execute without loading.
 
 Keep your main `SKILL.md` `body` lean and under 500 lines. If approaching 500 lines:
-- Keep high-level instructions and steps in `SKILL.md` 
+- Keep high-level instructions and steps in `SKILL.md`
 - Move detailed reference material to separate files.
 - Add clear pointers to where the model should go next.
 
@@ -236,7 +236,7 @@ cloud-deploy/
 2. **Be prescriptive when operations are fragile**, consistency matters, or a specific sequence must be followed.
 3. **Give the agent freedom when multiple approaches are valid and the task tolerates variation**. For flexible instructions, explaining why can be more effective than rigid directives.
 4. **Provide defaults, not menus**. When multiple tools or approaches could work, **pick a default**.
-5. **Favor procedures over declarations**. A skill should teach the agent *how to approach a class of problems*, NOT what to produce for a specific instance. 
+5. **Favor procedures over declarations**. A skill should teach the agent *how to approach a class of problems*, NOT what to produce for a specific instance.
 6. **Favor Templates for output format**. When you need the agent to produce output in a specific format, **PROVIDE A TEMPLATE**. Store them in `assets/` and reference them from `SKILL.md` using `@-mention` syntax so they only load when needed.
 7. **Use Checklists for multi-step workflows**. An explicit checklist helps the agent track progress and avoid skipping steps, especially when steps have dependencies or validation gates.
 8. **Add `Gotchas` sections in `SKILL.md`**. The highest-value content in many skills is a list of gotchas — environment-specific facts that defy reasonable assumptions. These aren’t general advice (“handle errors appropriately”) but concrete corrections to mistakes the agent will make without being told otherwise. **Keep gotchas in SKILL.md **where the agent reads them before encountering the situation
@@ -262,7 +262,7 @@ Output: feat(auth): implement JWT-based authentication
 
 ## Principle of least surprise
 
-Skills MUST NOT contain malware, exploit code, or content that would surprise the user if described. 
+Skills MUST NOT contain malware, exploit code, or content that would surprise the user if described.
 
 Don't create misleading skills or skills designed to facilitate unauthorized access or data exfiltration.
 
