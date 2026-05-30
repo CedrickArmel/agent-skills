@@ -1,9 +1,9 @@
 ---
 name: test-driven-development
 description: >
-  Describe how to implement Test-Driven Devlopment (TDD) in your in your development workflow. Use when implementing any feature, fixing any bug, or refactoring any code — Especially you are prompted to write test first, red-green-refactor, write failing test, or you are about to change behavior in code even if the prompt doesn't explicitly say "test" or "TDD". Also trigger proactively when you are prompted to jump straight to writing implementation without mentioning tests.
+  Describe how to implement Test-Driven Devlopment (TDD) in your in your development workflow. Use when implementing any feature, fixing any bug, or refactoring any code — Especially you are prompted to write test first, red-green-refactor, write failing test, or you are about to change behavior in code even if the prompt doesn't explicitly say "test" or "TDD". Also trigger proactively when you are prompted to jump straight to writing implementation without mentioning tests. Always write failing tests first, watch them fail, then implement — no exceptions
 metadata:
-  version: "0.1"
+  version: "0.2"
 ---
 
 # Test-Driven Development (TDD)
