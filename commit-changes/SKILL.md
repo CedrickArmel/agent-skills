@@ -7,7 +7,7 @@ compatibility: Requires /commit-message
 context: fork
 metadata:
   author: CedrickArmel
-  version: "0.2"
+  version: "0.3"
 ---
 
 # Commit changes
@@ -55,8 +55,9 @@ For each group of changes:
 For each group on its branch:
 
 1. Stage only the files belonging to that group.
-2. Invoke the `commit-message` skill to draft and validate the commit message.
-3. Commit using the validated message.
+2. Invoke the `commit-message` skill to draft the commit message.
+3. Commit using the validated message file.
+4. Refine the message if it fails to pass validation at commit.
 
 Repeat for every group before finishing.
 
