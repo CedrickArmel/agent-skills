@@ -14,7 +14,7 @@ Create directories as you go — not all upfront.
 
 For each test case:
 
-1. spawn two subagents in the same turn — one with the skill called `with-skill`, one without called `baseline`. DO NOT spawn `with-skill` first and come back for `baseline` later. 
+1. spawn two subagents in the same turn — one with the skill called `with-skill`, one without called `baseline`. DO NOT spawn `with-skill` first and come back for `baseline` later.
 
 #### `with-skill` run prompt
 
@@ -30,7 +30,7 @@ Execute this task:
 * Outputs to save: <what the user cares about>
 ```
 
-#### `baseline` run 
+#### `baseline` run
 
 Here’s an example of the instructions you’d give the agent for a single `baseline` run:
 
