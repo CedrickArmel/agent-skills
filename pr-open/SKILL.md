@@ -20,7 +20,7 @@ Open a GitHub pull request for the current branch, or report the existing one.
 ## Context
 
 - Current branch: !`git branch --show-current`
-- Existing PRs for this branch: !`bash -c 'gh pr list --head "$(git branch --show-current)" --json number,title,state,url 2>/dev/null'`
+- Existing PRs for this branch: !`gh pr list --head "$(git branch --show-current)" --json number,title,state,url 2>/dev/null`
 - Repo default branch: !`gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name' 2>/dev/null || echo "main"`
 
 ## Step 1 — Pre-flight checks
